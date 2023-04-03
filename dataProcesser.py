@@ -1,19 +1,17 @@
-def SUCCESSIONAL_DIFFERENCE(variable_num,variable_list):
+def SUCCESSIONAL_DIFFERENCE(variable_list):
     sum = 0
     
-    for i in range(0,variable_num//2):
+    for i in range(1,variable_list[0]//2+1):
         sum -= variable_list[i]
-        sum +=variable_list[variable_num-1-i]
-    sum /= (variable_num//2)
-    sum /= (variable_num//2)
+        sum +=variable_list[variable_list[0]-i+1]
+    sum /= (variable_list[0]//2)
+    sum /= (variable_list[0]//2)
     return sum
 def GET_VARIABLE_LIST():
-    variable_num=int(input('Type in the number of variables: '))
-    variable_list = []
-    for i in range(variable_num):
+    variable_list = []#0号存放变量个数，1~n存放变量
+    variable_list.append(int(input('Type in the number of variables: ')))
+    for i in range(1,variable_list[0]+1):
         variable_list.append(float(input("Input the variables: ")))
         i += 1
-    return variable_num,variable_list
-#SUCCESSIONAL_DIFFERENCE(GET_VARIABLE_LIST())
-a,b=GET_VARIABLE_LIST()
-print(SUCCESSIONAL_DIFFERENCE(a,b))
+    return variable_list
+print(SUCCESSIONAL_DIFFERENCE(GET_VARIABLE_LIST()))
