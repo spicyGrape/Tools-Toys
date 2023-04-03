@@ -5,7 +5,8 @@ def SUCCESSIONAL_DIFFERENCE(variable_list):
         sum +=variable_list[variable_list[0]-i+1]
     sum /= (variable_list[0]//2)
     sum /= (variable_list[0]//2)
-    return sum
+    average = sum
+    return average
 
 def OPERATE_VARIABLE_LIST(variable_list,operation):
     for i in range(1,variable_list[0]+1):
