@@ -1,12 +1,13 @@
 def SUCCESSIONAL_DIFFERENCE(variable_list):
-    sum = 0
-    for i in range(1,variable_list[0]//2+1):
-        sum -= variable_list[i]
-        sum +=variable_list[variable_list[0]-i+1]
-    sum /= (variable_list[0]//2)
-    sum /= (variable_list[0]//2)
-    average = sum
+    delta_list = TRANSFORM_TO_DELTA(variable_list)
+    average= (1/delta_list[0])*SIGMA(OPERATE_VARIABLE_LIST(delta_list,lambda x:x/delta_list[0]))
     return average
+
+def SIGMA(variable_list):
+    sum = 0
+    for i in range(1,variable_list[0]+1):
+        sum += variable_list[i]
+    return sum
 
 def OPERATE_VARIABLE_LIST(variable_list,operation):
     for i in range(1,variable_list[0]+1):
