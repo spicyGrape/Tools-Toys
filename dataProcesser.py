@@ -1,7 +1,7 @@
 #原始数据的数据量必须为偶数
 def SUCCESSIONAL_DIFFERENCE(variable_list):#对数列用逐差法求delta均值
     delta_list = TRANSFORM_TO_DELTA(variable_list)
-    average= (1/delta_list[0])*SIGMA(OPERATE_VARIABLE_LIST(delta_list,lambda x:x/delta_list[0]))
+    average= (1/delta_list[0])*SIGMA(delta_list)
     return average
 
 def SIGMA(variable_list):#求和数列
@@ -11,9 +11,10 @@ def SIGMA(variable_list):#求和数列
     return sum
 
 def OPERATE_VARIABLE_LIST(variable_list,operation):#对数列每一位进行operation操作
+    operated_variable_list = [variable_list[0]]
     for i in range(1,variable_list[0]+1):
-        variable_list[i]=operation(variable_list[i])
-    return variable_list
+        operated_variable_list.append(operation(variable_list[i]))
+    return operated_variable_list
 
 def GET_VARIABLE_LIST():
     variable_list = []#0号存放变量个数，1~n存放变量
@@ -23,11 +24,11 @@ def GET_VARIABLE_LIST():
         i += 1
     return variable_list
 
-def TRANSFORM_TO_DELTA(variable_list):#数列后一半减前一半
+def TRANSFORM_TO_DELTA(variable_list):#逐差的delta平均值
+    transformed_list = [variable_list[0]//2]
     for i in range(1,variable_list[0]//2+1):
-        variable_list[i] = variable_list[i+variable_list[0]//2]-variable_list[i]
-    variable_list[0]=variable_list[0]//2
-    return variable_list
+        transformed_list.append ((variable_list[i+variable_list[0]//2]-variable_list[i])/(variable_list[0]//2))
+    return transformed_list
 
 def LIST_AVERAGE(variable_list):#传入需要求均值的数列
     sum = 0
@@ -38,16 +39,15 @@ def LIST_AVERAGE(variable_list):#传入需要求均值的数列
 
 def UNCERTAINTY(variable_list,ub):#传入未经处理的原始数据
     delta_list = TRANSFORM_TO_DELTA(variable_list)
-    average = LIST_AVERAGE(variable_list)
-    delta_list = OPERATE_VARIABLE_LIST(delta_list,lambda x:(x-average)**2)
-    ua=(SIGMA(delta_list)/delta_list[0])**0.5
+
+    average = SUCCESSIONAL_DIFFERENCE(variable_list)
+    ua=(SIGMA(OPERATE_VARIABLE_LIST(delta_list,lambda x:(x-average)**2))/(delta_list[0]-1))**0.5
     u = (ua**2+ub**2)**0.5
     return u
 
 
-va_list = GET_VARIABLE_LIST()
-average_lambda = 2 * SUCCESSIONAL_DIFFERENCE(va_list)
-uncertainty = UNCERTAINTY(OPERATE_VARIABLE_LIST(va_list,lambda x: x*2),0.005)
-print(average_lambda)
-print(uncertainty)
-print(va_list)
+va_list = OPERATE_VARIABLE_LIST(GET_VARIABLE_LIST(),lambda x:x*2)
+average_lambda =SUCCESSIONAL_DIFFERENCE(va_list)
+uncertainty = UNCERTAINTY(va_list,0.005)
+print(average_lambda*37.580)
+print(uncertainty*37.580)
